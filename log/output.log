@@ -1,0 +1,10 @@
+2021-12-17 17:58:22 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:28 - done
+2021-12-17 18:00:46 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:28 - done
+2021-12-17 18:05:44 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:28 - done
+2021-12-17 18:07:52 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:28 - done
+2021-12-17 18:18:40 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:110 - user with ID 1was deleted
+2021-12-17 18:22:30 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:130 - user with ID 5 was updated
+2021-12-17 18:22:54 - [WARN ] - com.bonedone.dao.Impl.UserDAOImpl:147 - user with ID 6 not found
+2021-12-17 18:22:54 - [WARN ] - com.bonedone.dao.Impl.UserDAOImpl:135 - user with ID 6 was not updated
+2021-12-17 18:23:57 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:111 - user with ID 5was deleted
+2021-12-17 18:25:14 - [INFO ] - com.bonedone.dao.Impl.UserDAOImpl:111 - user with ID 5 was deleted

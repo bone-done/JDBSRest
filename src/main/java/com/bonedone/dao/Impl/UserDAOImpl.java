@@ -21,13 +21,28 @@ public class UserDAOImpl implements UserDAO {
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFullName());
+            statement.setString(3, user.getFirstName());
             statement.setString(4, user.getLastName());
             statement.setString(5, user.getRole().name());
             if (withId) statement.setInt(6, user.getId());
+            statement.execute();
         } catch (SQLException e) {
             log.error(e);
         }
+    }
+
+    public static void main(String[] args) {
+        UserDAOImpl dao = new UserDAOImpl();
+//        dao.update(new User(
+//                6,
+//                "aaa",
+//                "aaa",
+//                "full",
+//                "last",
+//                Role.ADMIN
+//        ));
+        dao.deleteById(5);
+//        System.out.println(dao.getAll());
     }
 
     @Override
@@ -37,12 +52,13 @@ public class UserDAOImpl implements UserDAO {
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, id);
+            statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 user.setId(resultSet.getInt("id"));
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
-                user.setFullName(resultSet.getString("full_name"));
+                user.setFirstName(resultSet.getString("first_name"));
                 user.setLastName(resultSet.getString("last_name"));
                 user.setRole(Role.valueOf(resultSet.getString("role")));
             }
@@ -52,7 +68,7 @@ public class UserDAOImpl implements UserDAO {
         if (user.getId() == 0 &&
                 user.getEmail() == null &&
                 user.getPassword() == null &&
-                user.getFullName() == null &&
+                user.getFirstName() == null &&
                 user.getLastName() == null &&
                 user.getRole() == null) {
             NullPointerException exception = new NullPointerException("user is empty");
@@ -68,13 +84,13 @@ public class UserDAOImpl implements UserDAO {
         try (Connection connection = SQLConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(SQL)) {
-            while (resultSet.next()) {
+             while (resultSet.next()) {
                 userList.add(
                         new User(
                                 resultSet.getInt("id"),
                                 resultSet.getString("email"),
                                 resultSet.getString("password"),
-                                resultSet.getString("full_name"),
+                                resultSet.getString("first_name"),
                                 resultSet.getString("last_name"),
                                 Role.valueOf(resultSet.getString("role"))
                         )
@@ -92,7 +108,8 @@ public class UserDAOImpl implements UserDAO {
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, id);
-            log.info("user with ID " + id + "was deleted");
+            statement.execute();
+            log.info("user with ID " + id + " was deleted");
         } catch (SQLException e) {
             log.error(e);
         }
@@ -106,16 +123,17 @@ public class UserDAOImpl implements UserDAO {
                  PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, user.getEmail());
                 statement.setString(2, user.getPassword());
-                statement.setString(3, user.getFullName());
+                statement.setString(3, user.getFirstName());
                 statement.setString(4, user.getLastName());
                 statement.setString(5, user.getRole().name());
                 statement.setInt(6, user.getId());
-                log.info("user with ID " + user.getId() + "was updated");
+                statement.execute();
+                log.info("user with ID " + user.getId() + " was updated");
             } catch (SQLException e) {
                 log.error(e);
             }
         } else {
-            log.warn("user with ID " + user.getId() + "was not updated");
+            log.warn("user with ID " + user.getId() + " was NOT updated");
         }
     }
 
@@ -124,9 +142,10 @@ public class UserDAOImpl implements UserDAO {
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, user.getId());
+            statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
-                    log.warn("user with ID " + user.getId() + " not found");
+                    log.warn("user with ID " + user.getId() + " NOT found");
                     return false;
                 }
             }

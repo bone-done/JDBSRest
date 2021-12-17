@@ -22,6 +22,7 @@ public class ProductDAOImpl implements ProductDAO {
             statement.setString(2, product.getDescription());
             statement.setDouble(3, product.getPrice());
             if (withId) statement.setInt(4, product.getId());
+            statement.execute();
         } catch (SQLException e) {
             log.error(e);
         }
@@ -34,6 +35,7 @@ public class ProductDAOImpl implements ProductDAO {
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, id);
+            statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 product.setId(resultSet.getInt("id"));
@@ -83,6 +85,7 @@ public class ProductDAOImpl implements ProductDAO {
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, id);
+            statement.execute();
             log.info("Product with ID " + id + "was deleted");
         } catch (SQLException e) {
             log.error(e);
@@ -99,6 +102,7 @@ public class ProductDAOImpl implements ProductDAO {
                 statement.setString(2, product.getDescription());
                 statement.setDouble(3, product.getPrice());
                 statement.setInt(4, product.getId());
+                statement.execute();
                 log.info("Product with ID " + product.getId() + "was updated");
             } catch (SQLException e) {
                 log.error(e);
@@ -113,6 +117,7 @@ public class ProductDAOImpl implements ProductDAO {
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, product.getId());
+            statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
                     log.warn("Product with ID " + product.getId() + " not found");

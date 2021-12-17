@@ -8,28 +8,44 @@ public class User {
     private int id;
     private String email;
     private String password;
-    private String fullName;
+    private String firstName;
     private String lastName;
     private Role role;
 
     public User() {
     }
 
-    public User(int id, String email, String password, String fullName, String lastName, Role role) {
+    public User(int id, String email, String password, String firstName, String lastName, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.fullName = fullName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
     }
 
-    public User(String email, String password, String fullName, String lastName, Role role) {
+    public User(String email, String password, String firstName, String lastName, Role role) {
         this.email = email;
         this.password = password;
-        this.fullName = fullName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+    }
+    public User(int id, String email, String password, String firstName, String lastName, String role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = Role.valueOf(role);
+    }
+
+    public User(String email, String password, String firstName, String lastName, String role) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = Role.valueOf(role);
     }
 
     public int getId() {
@@ -56,12 +72,12 @@ public class User {
         this.password = password;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -88,14 +104,14 @@ public class User {
         return id == user.id &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(fullName, user.fullName) &&
+                Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, fullName, lastName, role);
+        return Objects.hash(id, email, password, firstName, lastName, role);
     }
 
     @Override
@@ -104,7 +120,7 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", fullName='" + fullName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", role=" + role +
                 '}';
