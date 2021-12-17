@@ -33,15 +33,15 @@ public class UserDAOImpl implements UserDAO {
 
     public static void main(String[] args) {
         UserDAOImpl dao = new UserDAOImpl();
-//        dao.update(new User(
-//                6,
-//                "aaa",
+//        dao.create(new User(
+//                1,
+//                "aaaa",
 //                "aaa",
 //                "full",
 //                "last",
 //                Role.ADMIN
 //        ));
-        dao.deleteById(5);
+        System.out.println(dao.getById(4));
 //        System.out.println(dao.getAll());
     }
 
@@ -54,27 +54,24 @@ public class UserDAOImpl implements UserDAO {
             statement.setInt(1, id);
             statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                user.setId(resultSet.getInt("id"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setFirstName(resultSet.getString("first_name"));
-                user.setLastName(resultSet.getString("last_name"));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
+                if (!resultSet.next()) {
+                    NullPointerException exception = new NullPointerException("user with ID " + id + " NOT found");
+                    log.error(exception);
+                    throw exception;
+                } else {
+                    user.setId(resultSet.getInt("id"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setRole(Role.valueOf(resultSet.getString("role")));
+                }
             }
+
         } catch (SQLException e) {
             log.error(e);
         }
-        if (user.getId() == 0 &&
-                user.getEmail() == null &&
-                user.getPassword() == null &&
-                user.getFirstName() == null &&
-                user.getLastName() == null &&
-                user.getRole() == null) {
-            NullPointerException exception = new NullPointerException("user is empty");
-            log.error(exception);
-            throw exception;
-        } else return user;
+        return user;
     }
 
     @Override
@@ -84,7 +81,7 @@ public class UserDAOImpl implements UserDAO {
         try (Connection connection = SQLConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(SQL)) {
-             while (resultSet.next()) {
+            while (resultSet.next()) {
                 userList.add(
                         new User(
                                 resultSet.getInt("id"),
@@ -108,8 +105,10 @@ public class UserDAOImpl implements UserDAO {
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, id);
-            statement.execute();
-            log.info("user with ID " + id + " was deleted");
+            if (statement.execute()) {
+                log.info("user with ID " + id + " was deleted");
+            } else log.warn("user with ID " + id + " was NOT deleted");
+
         } catch (SQLException e) {
             log.error(e);
         }

@@ -10,7 +10,8 @@ public class Bucket {
     public Bucket() {
     }
 
-    public Bucket(LocalDateTime createdDate) {
+    public Bucket(int id, LocalDateTime createdDate) {
+        this.id = id;
         this.createdDate = createdDate;
     }
 
