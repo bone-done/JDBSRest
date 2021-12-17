@@ -8,6 +8,7 @@ import com.bonedone.util.SQLConnection;
 import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j
@@ -30,47 +31,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void update(User user) {
-        final String SQL = Queries.UPDATE_USER;
-        if (isExist(user)) {
-            try (Connection connection = SQLConnection.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(SQL)) {
-                statement.setString(1, user.getEmail());
-                statement.setString(2, user.getPassword());
-                statement.setString(3, user.getFullName());
-                statement.setString(4, user.getLastName());
-                statement.setString(5, user.getRole().name());
-                statement.setInt(6, user.getId());
-                log.info("user with ID " + user.getId() + "was updated");
-            } catch (SQLException e) {
-                log.error(e);
-            }
-        } else {
-            log.warn("user with ID " + user.getId() + "was not updated");
-        }
-    }
-
-    @Override
-    public void delete(User user) {
-        final String SQL = Queries.DELETE_USER;
-        if (isExist(user)) {
-            try (Connection connection = SQLConnection.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(SQL)) {
-                statement.setInt(1, user.getId());
-                log.info("user with ID " + user.getId() + "was deleted");
-            } catch (SQLException e) {
-                log.error(e);
-            }
-        } else {
-            log.warn("user with ID " + user.getId() + "was not deleted");
-        }
-
-    }
-
-    @Override
-    public User getUserById(int id) {
+    public User getById(int id) {
         User user = new User();
-        String SQL = "SELECT * FROM USER WHERE ID = ?";
+        final String SQL = Queries.GET_USER_BY_ID;
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, id);
@@ -99,8 +62,61 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return null;
+    public List<User> getAll() {
+        List<User> userList = new ArrayList<>();
+        final String SQL = Queries.GET_ALL_USERS;
+        try (Connection connection = SQLConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(SQL)) {
+            while (resultSet.next()) {
+                userList.add(
+                        new User(
+                                resultSet.getInt("id"),
+                                resultSet.getString("email"),
+                                resultSet.getString("password"),
+                                resultSet.getString("full_name"),
+                                resultSet.getString("last_name"),
+                                Role.valueOf(resultSet.getString("role"))
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return userList;
+    }
+
+    @Override
+    public void deleteById(int id) {
+        final String SQL = Queries.DELETE_USER;
+        try (Connection connection = SQLConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
+            statement.setInt(1, id);
+            log.info("user with ID " + id + "was deleted");
+        } catch (SQLException e) {
+            log.error(e);
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        final String SQL = Queries.UPDATE_USER;
+        if (isExist(user)) {
+            try (Connection connection = SQLConnection.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(SQL)) {
+                statement.setString(1, user.getEmail());
+                statement.setString(2, user.getPassword());
+                statement.setString(3, user.getFullName());
+                statement.setString(4, user.getLastName());
+                statement.setString(5, user.getRole().name());
+                statement.setInt(6, user.getId());
+                log.info("user with ID " + user.getId() + "was updated");
+            } catch (SQLException e) {
+                log.error(e);
+            }
+        } else {
+            log.warn("user with ID " + user.getId() + "was not updated");
+        }
     }
 
     private boolean isExist(User user) {
@@ -119,5 +135,4 @@ public class UserDAOImpl implements UserDAO {
         }
         return true;
     }
-
 }
