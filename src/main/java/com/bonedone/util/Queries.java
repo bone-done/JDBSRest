@@ -32,4 +32,13 @@ public class Queries {
     public static final String UPDATE_BUCKET = "UPDATE product SET create_date = ? WHERE id = ?";
     public static final String BUCKET_IS_EXIST = "SELECT * FROM product WHERE ID = ?";
 
+    //BucketProduct
+
+    public static final String CREATE_BUCKET_PRODUCT = "INSERT INTO bucket_product (Bucket_id, product_id, number, id) VALUES (?,?,?,?)";
+    public static final String GET_BUCKET_PRODUCT_BY_ID = "SELECT * FROM bucket_product WHERE ID = ?";
+    public static final String GET_ALL_BUCKETPRODUCTS = "SELECT * FROM bucket_product";
+    public static final String DELETE_BUCKET_PRODUCT = "DELETE FROM bucket_product WHERE id = ?";
+    public static final String UPDATE_BUCKET_PRODUCT = "UPDATE bucket_product SET bucket_id = ?, product_id = ?, number = ? WHERE id = ?";
+    public static final String BUCKET_PRODUCT_IS_EXIST = "SELECT * FROM bucket_product WHERE ID = ?";
+
 }
