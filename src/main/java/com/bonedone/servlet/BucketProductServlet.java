@@ -6,11 +6,13 @@ import com.bonedone.service.impl.BucketProductServiceImpl;
 import com.bonedone.util.RestUtil;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebServlet("/product_bucket")
 public class BucketProductServlet extends HttpServlet {
     private Service service = new BucketProductServiceImpl();
 
