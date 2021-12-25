@@ -8,7 +8,7 @@ import com.bonedone.service.BucketService;
 import java.util.List;
 
 public class BucketServiceImpl implements BucketService {
-    private Dao dao = new BucketDaoImpl();
+    private final Dao<Bucket> dao = new BucketDaoImpl();
 
     @Override
     public void create(Bucket bucket) {

@@ -1,15 +1,19 @@
 package com.bonedone.dao.Impl;
 
 import com.bonedone.dao.BucketDAO;
+import com.bonedone.exceptions.BucketIsNullException;
+import com.bonedone.exceptions.ProductIsNullException;
 import com.bonedone.model.Bucket;
 import com.bonedone.util.Queries;
 import com.bonedone.util.SQLConnection;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Log4j
 public class BucketDaoImpl implements BucketDAO {
@@ -26,9 +30,10 @@ public class BucketDaoImpl implements BucketDAO {
         }
     }
 
+    @SneakyThrows
     @Override
     public Bucket getById(int id) {
-        Bucket bucket = new Bucket();
+        Bucket bucket = null;
         final String SQL = Queries.GET_BUCKET_BY_ID;
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
@@ -36,18 +41,16 @@ public class BucketDaoImpl implements BucketDAO {
             statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                bucket.setId(resultSet.getInt("id"));
-                bucket.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
+                bucket = new Bucket(
+                        resultSet.getInt("id"),
+                        resultSet.getTimestamp("created_date").toLocalDateTime()
+                );
             }
         } catch (SQLException e) {
             log.error(e);
         }
-        if (bucket.getId() == 0 &&
-                bucket.getCreatedDate() == null) {
-            NullPointerException exception = new NullPointerException("Bucket is empty");
-            log.error(exception);
-            throw exception;
-        } else return bucket;
+        if (Objects.isNull(bucket)) throw new BucketIsNullException("bucket with ID " + id + " NOT found");
+        else return bucket;
     }
 
     @Override

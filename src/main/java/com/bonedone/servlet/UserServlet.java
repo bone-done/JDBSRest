@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
-    private Service service = new UserServiceImpl();
+    private final Service<User> service = new UserServiceImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

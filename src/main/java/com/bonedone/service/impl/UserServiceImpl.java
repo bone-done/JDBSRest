@@ -8,7 +8,7 @@ import com.bonedone.service.UserService;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private Dao dao = new UserDAOImpl();
+    private final Dao<User> dao = new UserDAOImpl();
 
     @Override
     public void create(User user) {

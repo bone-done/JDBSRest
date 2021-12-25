@@ -1,14 +1,18 @@
 package com.bonedone.dao.Impl;
 
 import com.bonedone.dao.ProductDAO;
+import com.bonedone.exceptions.ProductIsNullException;
+import com.bonedone.exceptions.UserIsNullException;
 import com.bonedone.model.Product;
 import com.bonedone.util.Queries;
 import com.bonedone.util.SQLConnection;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Log4j
 public class ProductDAOImpl implements ProductDAO {
@@ -28,9 +32,10 @@ public class ProductDAOImpl implements ProductDAO {
         }
     }
 
+    @SneakyThrows
     @Override
     public Product getById(int id) {
-        Product product = new Product();
+        Product product = null;
         final String SQL = Queries.GET_PRODUCT_BY_ID;
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
@@ -38,22 +43,18 @@ public class ProductDAOImpl implements ProductDAO {
             statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                product.setId(resultSet.getInt("id"));
-                product.setName(resultSet.getString("name"));
-                product.setDescription(resultSet.getString("description"));
-                product.setPrice(resultSet.getDouble("price"));
+                product = new Product(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("description"),
+                    resultSet.getDouble("price")
+                );
             }
         } catch (SQLException e) {
             log.error(e);
         }
-        if (product.getId() == 0 &&
-                product.getName() == null &&
-                product.getDescription() == null &&
-                product.getPrice() == 0) {
-            NullPointerException exception = new NullPointerException("Product is empty");
-            log.error(exception);
-            throw exception;
-        } else return product;
+        if (Objects.isNull(product)) throw new ProductIsNullException("product with ID " + id + " NOT found");
+        else return product;
     }
 
     @Override

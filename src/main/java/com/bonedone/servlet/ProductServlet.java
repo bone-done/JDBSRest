@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/product")
 public class ProductServlet extends HttpServlet {
-    private Service service = new ProductServiceImpl();
+    private final Service<Product> service = new ProductServiceImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

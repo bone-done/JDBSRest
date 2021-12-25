@@ -1,15 +1,18 @@
 package com.bonedone.dao.Impl;
 
 import com.bonedone.dao.UserDAO;
+import com.bonedone.exceptions.UserIsNullException;
 import com.bonedone.model.User;
 import com.bonedone.util.Queries;
 import com.bonedone.util.Role;
 import com.bonedone.util.SQLConnection;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Log4j
 public class UserDAOImpl implements UserDAO {
@@ -31,8 +34,8 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public static void main(String[] args) {
-        UserDAOImpl dao = new UserDAOImpl();
+//    public static void main(String[] args) {
+//        UserDAOImpl dao = new UserDAOImpl();
 //        dao.create(new User(
 //                1,
 //                "aaaa",
@@ -41,37 +44,35 @@ public class UserDAOImpl implements UserDAO {
 //                "last",
 //                Role.ADMIN
 //        ));
-        System.out.println(dao.getById(4));
+//        System.out.println(dao.getById(4));
 //        System.out.println(dao.getAll());
-    }
+//    }
 
+    @SneakyThrows
     @Override
     public User getById(int id) {
-        User user = new User();
+        User user = null;
         final String SQL = Queries.GET_USER_BY_ID;
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setInt(1, id);
             statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    NullPointerException exception = new NullPointerException("user with ID " + id + " NOT found");
-                    log.error(exception);
-                    throw exception;
-                } else {
-                    user.setId(resultSet.getInt("id"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setRole(Role.valueOf(resultSet.getString("role")));
-                }
+                resultSet.next();
+                user = new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        Role.valueOf(resultSet.getString("role"))
+                );
             }
-
         } catch (SQLException e) {
             log.error(e);
         }
-        return user;
+        if (Objects.isNull(user)) throw new UserIsNullException("user with ID " + id + " NOT found");
+        else return user;
     }
 
     @Override

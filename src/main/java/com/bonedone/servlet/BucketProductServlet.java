@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/product_bucket")
 public class BucketProductServlet extends HttpServlet {
-    private Service service = new BucketProductServiceImpl();
+    private final Service<BucketProduct> service = new BucketProductServiceImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

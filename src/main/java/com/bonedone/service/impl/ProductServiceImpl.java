@@ -8,7 +8,7 @@ import com.bonedone.service.ProductService;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private Dao dao = new ProductDAOImpl();
+    private final Dao<Product> dao = new ProductDAOImpl();
 
     @Override
     public void create(Product product) {

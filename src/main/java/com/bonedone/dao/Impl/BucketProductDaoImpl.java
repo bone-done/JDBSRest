@@ -1,14 +1,17 @@
 package com.bonedone.dao.Impl;
 
 import com.bonedone.dao.BucketProductDAO;
+import com.bonedone.exceptions.BucketProductIsNullException;
 import com.bonedone.model.BucketProduct;
 import com.bonedone.util.Queries;
 import com.bonedone.util.SQLConnection;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Log4j
 public class BucketProductDaoImpl implements BucketProductDAO {
@@ -27,9 +30,10 @@ public class BucketProductDaoImpl implements BucketProductDAO {
         }
     }
 
+    @SneakyThrows
     @Override
     public BucketProduct getById(int id) {
-        BucketProduct bucketProduct = new BucketProduct();
+        BucketProduct bucketProduct = null;
         final String SQL = Queries.GET_BUCKET_PRODUCT_BY_ID;
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
@@ -37,23 +41,18 @@ public class BucketProductDaoImpl implements BucketProductDAO {
             statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                bucketProduct.setId(resultSet.getInt("id"));
-                bucketProduct.setBucketId(resultSet.getInt("bucket_id"));
-                bucketProduct.setProductId(resultSet.getInt("product_id"));
-                bucketProduct.setNumber(resultSet.getInt("number"));
-
+                bucketProduct = new BucketProduct(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("bucket_id"),
+                        resultSet.getInt("product_id"),
+                        resultSet.getInt("number")
+                );
             }
         } catch (SQLException e) {
             log.error(e);
         }
-        if (bucketProduct.getId() == 0 &&
-                bucketProduct.getBucketId() == 0 &&
-                bucketProduct.getProductId() == 0 &&
-                bucketProduct.getNumber() == 0) {
-            NullPointerException exception = new NullPointerException("BucketProduct is empty");
-            log.error(exception);
-            throw exception;
-        } else return bucketProduct;
+        if (Objects.isNull(bucketProduct)) throw new BucketProductIsNullException("BucketProduct with ID " + id + " NOT found");
+        else return bucketProduct;
     }
 
     @Override

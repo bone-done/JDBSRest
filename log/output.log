@@ -17,3 +17,4 @@
 2021-12-18 00:43:23 - [ERROR] - com.bonedone.dao.Impl.UserDAOImpl:30 - java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'aaa' for key 'user.email'
 2021-12-18 00:44:46 - [WARN ] - com.bonedone.dao.Impl.UserDAOImpl:58 - user with ID 4 NOT found
 2021-12-18 00:50:09 - [ERROR] - com.bonedone.dao.Impl.UserDAOImpl:59 - java.lang.NullPointerException: user with ID 4 NOT found
+2021-12-25 16:39:00 - [ERROR] - com.bonedone.dao.Impl.UserDAOImpl:59 - java.lang.NullPointerException: user with ID 4 NOT found

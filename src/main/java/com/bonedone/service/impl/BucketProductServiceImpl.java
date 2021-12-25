@@ -2,13 +2,15 @@ package com.bonedone.service.impl;
 
 import com.bonedone.dao.Dao;
 import com.bonedone.dao.Impl.BucketDaoImpl;
+import com.bonedone.dao.Impl.BucketProductDaoImpl;
+import com.bonedone.model.Bucket;
 import com.bonedone.model.BucketProduct;
 import com.bonedone.service.BucketProductService;
 
 import java.util.List;
 
 public class BucketProductServiceImpl implements BucketProductService {
-    private Dao dao = new BucketDaoImpl();
+    private final Dao<BucketProduct> dao = new BucketProductDaoImpl();
 
     @Override
     public void create(BucketProduct bucketProduct) {
