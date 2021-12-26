@@ -71,7 +71,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             log.error(e);
         }
-        if (Objects.isNull(user)) throw new UserIsNullException("user with ID " + id + " NOT found");
+        if (Objects.isNull(user)) throw new UserIsNullException(id);
         else return user;
     }
 
@@ -160,7 +160,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             log.error(e);
         }
-        if (Objects.isNull(user)) throw new UserIsNullException("user with email " + email + " NOT found");
+        if (Objects.isNull(user)) throw new UserIsNullException(email);
         else return user;
     }
 
