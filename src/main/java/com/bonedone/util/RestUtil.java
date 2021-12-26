@@ -1,5 +1,6 @@
 package com.bonedone.util;
 
+import com.bonedone.model.User;
 import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j;
 
@@ -22,5 +23,10 @@ public class RestUtil {
         }
 
         return gson.fromJson(jb.toString(), clazz);
+    }
+
+    public static <T> String getJsonFromObject(T t){
+        Gson gson = new Gson();
+        return gson.toJson(t);
     }
 }

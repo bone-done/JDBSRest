@@ -11,7 +11,7 @@ public class Queries {
     public static final String USER_IS_EXIST = "SELECT * FROM user WHERE ID = ?";
     public static final String GET_USER_BY_ID = "SELECT * FROM user WHERE ID = ?";
     public static final String GET_ALL_USERS = "SELECT * FROM user";
-
+    public static final String GET_USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?";
 
     //Product
 

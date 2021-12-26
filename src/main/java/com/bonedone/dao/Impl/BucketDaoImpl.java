@@ -1,8 +1,7 @@
 package com.bonedone.dao.Impl;
 
-import com.bonedone.dao.BucketDAO;
+import com.bonedone.dao.BucketDao;
 import com.bonedone.exceptions.BucketIsNullException;
-import com.bonedone.exceptions.ProductIsNullException;
 import com.bonedone.model.Bucket;
 import com.bonedone.util.Queries;
 import com.bonedone.util.SQLConnection;
@@ -10,13 +9,12 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Log4j
-public class BucketDaoImpl implements BucketDAO {
+public class BucketDaoImpl implements BucketDao {
     @Override
     public void create(Bucket bucket) {
         final String SQL = Queries.CREATE_BUCKET;

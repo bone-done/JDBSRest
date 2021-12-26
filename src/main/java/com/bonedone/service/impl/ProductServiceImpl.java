@@ -1,14 +1,14 @@
 package com.bonedone.service.impl;
 
 import com.bonedone.dao.Dao;
-import com.bonedone.dao.Impl.ProductDAOImpl;
+import com.bonedone.dao.Impl.ProductDaoImpl;
 import com.bonedone.model.Product;
 import com.bonedone.service.ProductService;
 
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private final Dao<Product> dao = new ProductDAOImpl();
+    private final Dao<Product> dao = new ProductDaoImpl();
 
     @Override
     public void create(Product product) {

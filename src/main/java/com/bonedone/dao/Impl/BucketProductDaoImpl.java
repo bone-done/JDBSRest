@@ -1,6 +1,6 @@
 package com.bonedone.dao.Impl;
 
-import com.bonedone.dao.BucketProductDAO;
+import com.bonedone.dao.BucketProductDao;
 import com.bonedone.exceptions.BucketProductIsNullException;
 import com.bonedone.model.BucketProduct;
 import com.bonedone.util.Queries;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Log4j
-public class BucketProductDaoImpl implements BucketProductDAO {
+public class BucketProductDaoImpl implements BucketProductDao {
     @Override
     public void create(BucketProduct bucketProduct) {
         final String SQL = Queries.CREATE_BUCKET_PRODUCT;

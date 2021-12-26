@@ -1,8 +1,7 @@
 package com.bonedone.dao.Impl;
 
-import com.bonedone.dao.ProductDAO;
+import com.bonedone.dao.ProductDao;
 import com.bonedone.exceptions.ProductIsNullException;
-import com.bonedone.exceptions.UserIsNullException;
 import com.bonedone.model.Product;
 import com.bonedone.util.Queries;
 import com.bonedone.util.SQLConnection;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Log4j
-public class ProductDAOImpl implements ProductDAO {
+public class ProductDaoImpl implements ProductDao {
     @Override
     public void create(Product product) {
         boolean withId = product.getId() != 0;

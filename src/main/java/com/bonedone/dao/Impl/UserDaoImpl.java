@@ -1,6 +1,6 @@
 package com.bonedone.dao.Impl;
 
-import com.bonedone.dao.UserDAO;
+import com.bonedone.dao.UserDao;
 import com.bonedone.exceptions.UserIsNullException;
 import com.bonedone.model.User;
 import com.bonedone.util.Queries;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Log4j
-public class UserDAOImpl implements UserDAO {
+public class UserDaoImpl implements UserDao {
     @Override
     public void create(User user) {
         boolean withId = user.getId() != 0;
@@ -135,6 +135,33 @@ public class UserDAOImpl implements UserDAO {
         } else {
             log.warn("user with ID " + user.getId() + " was NOT updated");
         }
+    }
+
+    @SneakyThrows
+    @Override
+    public User getByEmail(String email) {
+        User user = null;
+        final String SQL = Queries.GET_USER_BY_EMAIL;
+        try (Connection connection = SQLConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
+            statement.setString(1, email);
+            statement.execute();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                user = new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        Role.valueOf(resultSet.getString("role"))
+                );
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        if (Objects.isNull(user)) throw new UserIsNullException("user with email " + email + " NOT found");
+        else return user;
     }
 
     private boolean isExist(User user) {

@@ -24,30 +24,6 @@ public class User {
         this.role = role;
     }
 
-    public User(String email, String password, String firstName, String lastName, Role role) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
-    public User(int id, String email, String password, String firstName, String lastName, String role) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = Role.valueOf(role);
-    }
-
-    public User(String email, String password, String firstName, String lastName, String role) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = Role.valueOf(role);
-    }
-
     public int getId() {
         return id;
     }
