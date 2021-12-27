@@ -10,5 +10,16 @@ document.addEventListener("DOMContentLoaded", evt => {
         .then(userData => {
             if (userData === undefined) return;
             user = userData;
+            update();
         })
 })
+
+function update() {
+    if (user.role ===  "ADMIN") {
+        let bodyElement = document.getElementsByTagName("body")[0];
+        let adminPanelElement = document.createElement("a");
+        adminPanelElement.setAttribute("href", "pages/admin/admin.html");
+        adminPanelElement.innerText = "Admin panel";
+        bodyElement.appendChild(adminPanelElement);
+    }
+}
