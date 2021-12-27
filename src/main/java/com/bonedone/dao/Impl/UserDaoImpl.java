@@ -1,7 +1,7 @@
 package com.bonedone.dao.Impl;
 
 import com.bonedone.dao.UserDao;
-import com.bonedone.exceptions.UserIsNullException;
+import com.bonedone.exception.UserIsNullException;
 import com.bonedone.model.User;
 import com.bonedone.util.Queries;
 import com.bonedone.util.Role;
@@ -148,14 +148,14 @@ public class UserDaoImpl implements UserDao {
             statement.execute();
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                user = new User(
-                        resultSet.getInt("id"),
-                        resultSet.getString("email"),
-                        resultSet.getString("password"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        Role.valueOf(resultSet.getString("role"))
-                );
+                    user = new User(
+                            resultSet.getInt("id"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            Role.valueOf(resultSet.getString("role"))
+                    );
             }
         } catch (SQLException e) {
             log.error(e);

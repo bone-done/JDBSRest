@@ -1,4 +1,4 @@
-package com.bonedone.exceptions;
+package com.bonedone.exception;
 
 public class UserIsNullException extends Exception {
 

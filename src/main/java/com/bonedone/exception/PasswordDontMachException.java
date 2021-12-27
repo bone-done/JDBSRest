@@ -1,4 +1,4 @@
-package com.bonedone.exceptions;
+package com.bonedone.exception;
 
 public class PasswordDontMachException extends Throwable {
     public PasswordDontMachException() {

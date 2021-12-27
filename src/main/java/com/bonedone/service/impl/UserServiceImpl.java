@@ -2,7 +2,8 @@ package com.bonedone.service.impl;
 
 import com.bonedone.dao.Impl.UserDaoImpl;
 import com.bonedone.dao.UserDao;
-import com.bonedone.exceptions.PasswordDontMachException;
+import com.bonedone.exception.PasswordDontMachException;
+import com.bonedone.exception.UserIsNullException;
 import com.bonedone.model.User;
 import com.bonedone.service.UserService;
 import com.bonedone.util.Role;

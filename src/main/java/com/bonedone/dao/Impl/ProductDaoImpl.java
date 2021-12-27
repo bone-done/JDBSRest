@@ -1,7 +1,7 @@
 package com.bonedone.dao.Impl;
 
 import com.bonedone.dao.ProductDao;
-import com.bonedone.exceptions.ProductIsNullException;
+import com.bonedone.exception.ProductIsNullException;
 import com.bonedone.model.Product;
 import com.bonedone.util.Queries;
 import com.bonedone.util.SQLConnection;

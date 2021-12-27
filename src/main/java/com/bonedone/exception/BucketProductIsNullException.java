@@ -1,4 +1,4 @@
-package com.bonedone.exceptions;
+package com.bonedone.exception;
 
 public class BucketProductIsNullException extends Throwable {
     public BucketProductIsNullException(String massage) {

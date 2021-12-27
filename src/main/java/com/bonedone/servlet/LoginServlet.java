@@ -1,7 +1,6 @@
 package com.bonedone.servlet;
 
 import com.bonedone.model.User;
-import com.bonedone.service.Service;
 import com.bonedone.service.UserService;
 import com.bonedone.service.impl.UserServiceImpl;
 import com.bonedone.util.RestUtil;
@@ -11,7 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Objects;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -21,8 +22,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = RestUtil.getFromJson(req, User.class);
         User userFromDb = service.getByEmailAndPassword(user.getEmail(), user.getPassword());
-
-        resp.getWriter().write(RestUtil.getJsonFromObject(userFromDb));
-
+        if (Objects.isNull(userFromDb)) resp.setStatus(401);
+        else {
+            HttpSession session = req.getSession();
+            session.setAttribute("role", userFromDb.getRole());
+        }
     }
 }

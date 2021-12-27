@@ -1,7 +1,7 @@
 package com.bonedone.dao.Impl;
 
 import com.bonedone.dao.BucketDao;
-import com.bonedone.exceptions.BucketIsNullException;
+import com.bonedone.exception.BucketIsNullException;
 import com.bonedone.model.Bucket;
 import com.bonedone.util.Queries;
 import com.bonedone.util.SQLConnection;

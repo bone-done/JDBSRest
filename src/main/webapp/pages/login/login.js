@@ -14,7 +14,7 @@ loginButton.addEventListener("click", ev => {
                 "password": password
             })
     }).then(res => {
-        console.log(res);
+        if (res.status === 200) document.location.href = "../../index.html"
         return res.json();
     })
 })
