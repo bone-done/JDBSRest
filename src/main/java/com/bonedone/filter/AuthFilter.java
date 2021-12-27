@@ -1,5 +1,6 @@
 package com.bonedone.filter;
 
+import com.bonedone.model.User;
 import com.bonedone.util.RestUtil;
 import com.bonedone.util.Role;
 
@@ -22,9 +23,9 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        Role role = (Role) request.getSession().getAttribute("role");
-        if (Objects.isNull(role)) response.setStatus(401);
-        else response.getWriter().write(RestUtil.getJsonFromObject(role));
+        User user = (User) request.getSession().getAttribute("user");
+        if (Objects.isNull(user)) response.setStatus(401);
+        else response.getWriter().write(RestUtil.getJsonFromObject(user));
 
 
     }

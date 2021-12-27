@@ -27,7 +27,7 @@ registerButton.addEventListener("click", ev => {
         "lastName": lastName
     };
 
-    fetch("http://localhost:8080/user", {
+    fetch('http://localhost:8080/registration', {
         method: 'POST',
         body: JSON.stringify(user)
     })

@@ -24,8 +24,15 @@ public class LoginServlet extends HttpServlet {
         User userFromDb = service.getByEmailAndPassword(user.getEmail(), user.getPassword());
         if (Objects.isNull(userFromDb)) resp.setStatus(401);
         else {
+            User userInSession = new User(
+                    userFromDb.getId(),
+                    userFromDb.getEmail(),
+                    userFromDb.getFirstName(),
+                    userFromDb.getLastName(),
+                    userFromDb.getRole()
+            );
             HttpSession session = req.getSession();
-            session.setAttribute("role", userFromDb.getRole());
+            session.setAttribute("user", userInSession);
         }
     }
 }
